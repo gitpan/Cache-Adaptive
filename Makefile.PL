@@ -1,12 +1,22 @@
-use 5.008008;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'Cache::Adaptive',
-    VERSION_FROM      => 'lib/Cache/Adaptive.pm', # finds $VERSION
-    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/Cache/Adaptive.pm', # retrieve abstract from module
-       AUTHOR         => 'Kazuho Oku <kazuho@freebsd.org>') : ()),
-);
+use strict;
+use warnings;
+use inc::Module::Install;
+
+name('Cache-Adaptive');
+author('Kazuho Oku <kazuhooku@gmail.com>');
+abstract('A Cache Engine with Adaptive Lifetime Control');
+version_from('lib/Cache/Adaptive.pm');
+license('perl');
+
+requires('Class::Accessor::Fast', 0.30);
+requires('List::Util', 1.18);
+requires('Time::HiRes', 1.65);
+
+build_requires('Cache::MemoryCache');
+
+use_test_base;
+
+auto_include;
+auto_install;
+
+WriteAll;

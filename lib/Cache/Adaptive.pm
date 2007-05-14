@@ -9,7 +9,7 @@ use base qw(Class::Accessor::Fast);
 use List::Util qw(min max reduce);
 use Time::HiRes qw(gettimeofday tv_interval);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 my %DEFAULTS = (
     backend         => undef,
@@ -82,7 +82,7 @@ sub access {
     $entry->{process_time} = gettimeofday - $at;
     $entry->{_cumu_process_time} += $entry->{process_time};
     $entry->{build_at} = $at;
-    $self->update_lifetime($entry, $opts);
+    $self->_update_lifetime($entry, $opts);
     # save
     delete $entry->{_no_write};
     delete $entry->{value};
@@ -100,7 +100,7 @@ sub access {
     $value;
 }
 
-sub update_lifetime {
+sub _update_lifetime {
     my ($self, $entry, $opts) = @_;
     
     my %params = (
@@ -217,6 +217,10 @@ Seconds until per-entry information used for deciding caching algorithm will be 
 
 =head1 METHODS
 
+=head2 new
+
+See above.
+
 =head2 access({ key => cache_key, builder => sub { ... } })
 
 Returns the cached entry if possible, or builds the entry by calling the builder function, and optionally stores the build entry to cache.
@@ -291,6 +295,10 @@ For updates, see
 Copyright (c) 2007 Cybozu Labs, Inc.  All rights reserved.
 
 written by Kazuho Oku E<lt>kazuhooku@gmail.comE<gt>
+
+=head1 CONTRIBUTORS
+
+Toru Yamaguchi E<lt>zigorou@cpan.orgE<gt>
 
 =head1 LICENSE
 
